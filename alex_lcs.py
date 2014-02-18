@@ -38,11 +38,9 @@ mid = ['e', 'o']
 open_ = []
 
 front = ['i', 'e']
-
 central = []
 back = ['u', 'o']
 
-front = ['i', 'e']
 
 phon_dict = {'voiced' : voiced, 'nasal' : nasal, 'bilabial' : bilabial,
 	'labiodental' : labiodental, 'alveolar' : alveolar,
@@ -51,7 +49,7 @@ phon_dict = {'voiced' : voiced, 'nasal' : nasal, 'bilabial' : bilabial,
 	'fricative' : fricative, 'lateral_approximant' : lateral_approximant,
 	'trill' : trill, 'flap' : flap, 'approximant' : approximant,
 	'closed' : closed, 'mid' : mid, 'open' : open_, 'front' : front,
-	'centra' : central, 'back' : back, 'front' : front}
+	'central' : central, 'back' : back, 'front' : front}
 
 #regular lcs algorithm, calculating min # edits required to match 2 strings
 def regular_lcs(matrix, outer, inner, word1, word2):
