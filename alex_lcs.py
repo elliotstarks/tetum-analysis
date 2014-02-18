@@ -33,7 +33,7 @@ approximant = ['j', 'w']
 # vowels
 # TODO need central open vowel symbol for SAMPA
 # TODO finish portuguese vowels
-close = ['i', 'i~', 'e']
+closed = ['i', 'i~', 'e']
 mid = ['e', 'o']
 open_ = []
 
@@ -49,7 +49,9 @@ phon_dict = {'voiced' : voiced, 'nasal' : nasal, 'bilabial' : bilabial,
 	'post_alveolar' : post_alveolar, 'palatal' : palatal,  'velar' : velar,
 	'uvular' : uvular, 'glottal' : glottal, 'nasal' : nasal, 'stop' : stop,
 	'fricative' : fricative, 'lateral_approximant' : lateral_approximant,
-	'trill' : trill, 'flap' : flap, 'approximant' : approximant}
+	'trill' : trill, 'flap' : flap, 'approximant' : approximant,
+	'closed' : closed, 'mid' : mid, 'open' : open_, 'front' : front,
+	'centra' : central, 'back' : back, 'front' : front}
 
 #regular lcs algorithm, calculating min # edits required to match 2 strings
 def regular_lcs(matrix, outer, inner, word1, word2):
