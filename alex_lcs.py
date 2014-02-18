@@ -1,36 +1,55 @@
-""" Generic strnig comparison algorithm  """
+""" Generic string comparison algorithm  """
 """
 
 """
 import collections
 
 # 'feature': grapheme1, grapheme2, grapheme3, ... , 
-voiced = ['m', 'n', 'b']
-nasal = ['m', 'n']
-#          stop,
-#          sibilant fricative,
-#          non-sibilant fricative,
-#          approximant,
-#          flap,
-#          trill,
-#          lateral fricative,
-#          lateral approx.,
-#          lat. flap, 
-#          bilabial,
-#          labiodental,
-#          dental,
-#          alveolar,
-#          post-alveolar,
-#          retroflex,
-#          alveolopalatal
-#          palatal
-#          velar
-#          uvular
-#          pharyngeal
-#          epiglottal
-#          glottal
 
-phon_dict = {'voiced' : voiced, 'nasal' : nasal}
+# the following sampa features are taken as a union of phonemes from the
+# wikipedia articles on tetum and portuguese phonologies.
+
+#consonants
+voiced = ['m', 'b', 'v', 'n', 'd', 'z', 'l', 'r', '4', 'dZ', 'Z', 'J', 'L', 'j',
+	 'g', 'w', 'R', 'R\\']
+
+bilabial = ['m', 'p', 'b']
+labiodental = ['f', 'v']
+alveolar = ['n', 't', 'd', 's', 'z', 'l', 'r', '4']
+post_alveolar = ['tS', 'dZ', 'S', 'Z']
+palatal = ['J', 'L', 'j']
+velar = ['k', 'g', 'w']
+uvular = ['R', 'R\\']
+glottal = ['h']
+
+nasal = ['m', 'n', 'J']
+stop = ['p', 'b', 't', 'd', 'tS', 'dZ', 'k', 'g']
+fricative = ['f', 'v', 's', 'z', 'S', 'Z', 'h']
+lateral_approximant = ['l', 'L', 'R']
+trill = ['r', 'R\\']
+flap = ['4']
+approximant = ['j', 'w']
+
+# vowels
+# TODO need central open vowel symbol for SAMPA
+# TODO finish portuguese vowels
+close = ['i', 'i~', 'e']
+mid = ['e', 'o']
+open_ = []
+
+front = ['i', 'e']
+
+central = []
+back = ['u', 'o']
+
+front = ['i', 'e']
+
+phon_dict = {'voiced' : voiced, 'nasal' : nasal, 'bilabial' : bilabial,
+	'labiodental' : labiodental, 'alveolar' : alveolar,
+	'post_alveolar' : post_alveolar, 'palatal' : palatal,  'velar' : velar,
+	'uvular' : uvular, 'glottal' : glottal, 'nasal' : nasal, 'stop' : stop,
+	'fricative' : fricative, 'lateral_approximant' : lateral_approximant,
+	'trill' : trill, 'flap' : flap, 'approximant' : approximant}
 
 #regular lcs algorithm, calculating min # edits required to match 2 strings
 def regular_lcs(matrix, outer, inner, word1, word2):
@@ -59,7 +78,7 @@ def feature_compare(matrix, outer, inner, word1, word2):
 	comp_total = 0
 	for feature in phon_dict.values():
 		if str1[i-1] in feature and str2[j-1] in feature:
-			# print 'matched' + str(feature)
+			# TODO make an actual evaluation procedure
 			comp_total = comp_total + 1
 
 	#TODO need floating points in matrix, not ints
