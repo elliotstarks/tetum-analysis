@@ -98,6 +98,24 @@ def other_foo(matrix, outer, inner, word1, word2):
 #assigns which comparison routine we want - will be a CLA to specify
 evaluate = feature_compare
 
+# Convert phonetic string to list of phonemes
+def listify(phonetic_string):
+	multi_char_pre  = ['d', 't', 'R', 'i']
+	multi_char_post = ['Z', 'S', '\\', '~']	
+	phonetic_list = []
+
+	for i in range(len(phonetic_string)):
+		if i < len(phonetic_string)-1:
+			if phonetic_string[i] in multi_char_pre:
+				if phonetic_string[i+1] is multi_char_post[multi_char_pre.index(phonetic_string[i])]:
+					phonetic_list.append(phonetic_string[i] + phonetic_string[i+1])
+					i = i+1 #***BUG*** extra increment not working 
+					continue
+		phonetic_list.append(phonetic_string[i])
+
+	print phonetic_list
+
+
 #   main
 #   input : 2 strings
 def lcs(str1, str2):
