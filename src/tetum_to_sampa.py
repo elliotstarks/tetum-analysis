@@ -1,141 +1,147 @@
-#unigraph = ["a", "e", "i", "o", "u", "b", "c", "d", "f", "g", "h", "j",
-#	"k", "l", "m", "ñ", "p", "r", "s", "t", "u", "w", "x", "y", "z"]
-
-#digraph = ["ii", "oo", "uu", "in", "im", ]
-
-#globals
+""" Class for translating tetum to SAMPA format """
+# coding=UTF-8
 
 #TODO check 'i~' == 'i' from data
 #TODO check apparent 7 missing letters w/ hearne
+class tetumSampa(object):
 
-unchanged_graphemes = ["a", "e", "i", "o", "u", "b", "d", "f", "g", "h", "k", "l", "p",
-        "s", "t", "u", "z"]
 
-outString = ""
+	def __init__(self):
+		self.unchanged_graphemes = ["a", "e", "i", "o", "u", "b", "d", "f", "g", "h", "k", "l", "p",
+			"s", "t", "u", "z", "n"]
+		self.inString = ""
+		self.outString = ""
+		self.index = 0
+		self.matched = False
 
-def checkTrigraphs(inString, index):
-'''checks if the three characters starting at index map to a trigraph'''
-        global outString
-        match = True
+	def checkTrigraphs(self):
+		'''checks if the three characters starting at self.index map to a trigraph'''
+		self.matched = True
 
-        if inString[index:index+3] == "uun":
-                outString += "u~:"
-        elif inString[index:index+3] == "een":
-                outString += "e~:"
-        elif inString[index:index+3] == "oon":
-                outString += "o~:"
-        elif inString[index:index+3] == "aan":
-                outString += "a~:"
-        else:
-                #print "tri not found: " + inString[index:index+3]
-                match = False
+		if self.inString[self.index:self.index+3] == "uun":
+				self.outString += "u~:"
+		elif self.inString[self.index:self.index+3] == "een":
+				self.outString += "e~:"
+		elif self.inString[self.index:self.index+3] == "oon":
+				self.outString += "o~:"
+		elif self.inString[self.index:self.index+3] == "aan":
+				self.outString += "a~:"
+		elif self.inString[self.index:self.index+3] == "iin":
+				self.outString += "i~:"
+		else:
+				#print "tri not found: " + self.inString[self.index:self.index+3]
+				self.matched = False
 
-        return match
+	def checkDigraphs(self):
+		'''checks if the two characters starting at self.index map to a digraph'''
+		self.matched = True
 
-def checkDigraphs(inString, index):
-'''checks if the two characters starting at index map to a digraph'''
-        global outString
-        match = True
+		if self.inString[self.index:self.index+2] == "ii":
+			self.outString += "i:"
+		elif self.inString[self.index:self.index+2] == "oo":
+			self.outString += "o:"
+		elif self.inString[self.index:self.index+2] == "uu":
+			self.outString += "u:"
+		elif self.inString[self.index:self.index+2] == "in":
+			self.outString += "i~"
+		elif self.inString[self.index:self.index+2] == "un":
+			self.outString += "u~"
+		elif self.inString[self.index:self.index+2] == "en":
+			self.outString += "e~"
+		elif self.inString[self.index:self.index+2] == "em":
+			self.outString += "e~"
+		elif self.inString[self.index:self.index+2] == "on":
+			self.outString += "o~"
+		elif self.inString[self.index:self.index+2] == "om":
+			self.outString += "o~"
+		elif self.inString[self.index:self.index+2] == "an":
+			self.outString += "a~"
+		elif self.inString[self.index:self.index+2] == "am":
+			self.outString += "a~"
+		elif self.inString[self.index:self.index+2] == "im":
+			self.outString += "i~"
+		elif self.inString[self.index:self.index+2] == "ll":
+			if (self.index > 0 and self.inString[self.index - 1] == 'i'):
+				self.outString += "l"
+			else:
+				self.outString += "il"
+	#TODO check lh symbol
+	#        elif self.inString[self.index:self.index+2] == "lh":
+	#                return True
+	#                self.outString += "something"
+		elif self.inString[self.index:self.index+2] == "nh":
+			self.outString += "n_0"
+		elif self.inString[self.index:self.index+2] == "ng":
+			self.outString += "N"
+		elif self.inString[self.index:self.index+2] == "rr":
+			self.outString += "r"
+		else:
+			#print "bi not found: " + self.inString[self.index:self.index+2]
+			self.matched = False
 
-        if inString[index:index+2] == "ii":
-                outString += "i:"
-        elif inString[index:index+2] == "oo":
-                outString += "o:"
-        elif inString[index:index+2] == "im":
-                outString += "i~"
-        elif inString[index:index+2] == "un":
-                outString += "u~"
-        elif inString[index:index+2] == "en":
-                outString += "e~"
-        elif inString[index:index+2] == "em":
-                outString += "e~"
-        elif inString[index:index+2] == "on":
-                outString += "o~"
-        elif inString[index:index+2] == "om":
-                outString += "o~"
-        elif inString[index:index+2] == "an":
-                outString += "a~"
-        elif inString[index:index+2] == "am":
-                outString += "a~"
-        elif inString[index:index+2] == "im":
-                outString += "i~"
-        elif inString[index:index+2] == "ll":
-                if (index > 0 and inString[index - 1] == 'i'):
-                        outString += "l"
-                else:
-                        outString += "il"
-#TODO check lh symbol
-#        elif inString[index:index+2] == "lh":
-#                return True
-#                outString += "something"
-        elif inString[index:index+2] == "nh":
-                outString += "n_0"
-        elif inString[index:index+2] == "ng":
-                outString += "N"
-        elif inString[index:index+2] == "rr":
-                outString += "r"
-        else:
-                #print "bi not found: " + inString[index:index+2]
-                match = False
+	def checkUnigraphs(self):
+		'''checks if the character at self.index maps to anything'''
+		self.matched = True
 
-        return match
+		if self.inString[self.index] in self.unchanged_graphemes:
+			self.outString += self.inString[self.index]
+		elif self.inString[self.index] == 'c':
+			self.outString += "k"
+		elif self.inString[self.index] == 'j':
+			self.outString += "z"
+		elif self.inString[self.index] == 'ñ':
+			if self.index > 0 and self.inString[self.index - 1] == 'i':
+				self.outString += "n"
+			else:
+				self.outString += "in"
+		elif self.inString[self.index] == 'r':
+			self.outString += "4"
+		elif self.inString[self.index] == 'w':
+			self.outString += "b"
+		elif self.inString[self.index] == 'x':
+			self.outString += "s"
+		elif self.inString[self.index] == 'y':
+			self.outString += "j"
+		elif self.inString[self.index] == 'v':
+			self.outString += "b"
+		elif self.inString[self.index] == 'á':
+			self.outString += "a"
+		elif self.inString[self.index] == 'ó':
+			self.outString += "o"
+		elif self.inString[self.index] == 'ú':
+			self.outString += "u"
+		elif self.inString[self.index] == 'é':
+			self.outString += "e"
+		elif self.inString[self.index] == 'í':
+			self.outString += "i"
+		else:
+			print "uni not found: " + self.inString[self.index]
+			self.matched = False
 
-def checkUnigraphs(inString, index):
-'''checks if the character at index maps to anything'''
-        global outString
-        global unchanged_graphemes
-        match = True
+	def doTrans(self, tetumWord):
+		self.inString = tetumWord
+		strLen = len(self.inString)
+		self.outString = ""
+		self.index = 0
+		self.matched = False
+		    
+		while (self.index < strLen):
+			#print "new loop: {}".format(self.index)
 
-        if inString[index] in unchanged_graphemes:
-                outString += inString[index]
-        elif inString[index] == 'c':
-                outString += "k"
-        elif inString[index] == 'j':
-                outString += "z"
-        elif inString[index] == 'ñ':
-                if index > 0 and inString[index - 1] == 'i':
-                        outString += "n"
-                else:
-                        outString += "in"
-        elif inString[index] == 'r':
-                outString += "4"
-        elif inString[index] == 'w':
-                outString += "b"
-        elif inString[index] == 'x':
-                outString += "s"
-        elif inString[index] == 'y':
-                outString += "j"
-        else:
-                #print "uni not found: " + inString[index]
-                match = False
+			self.checkTrigraphs()
+			#print self.outString
+			if self.matched == True:
+				self.index += 3
+			else:
+				self.checkDigraphs()
+				if self.matched == True:
+					self.index += 2
+				else:
+					self.checkUnigraphs()
+					self.index += 1
 
-        return match
+				if self.matched == False:
+					#print "self.outString so far: " + self.outString + "self.index: {}".format(self.index)
+					return
 
-def tetumToSampa(inString):
-        global outString
-        outString = ""
-        i = 0
-        strLen = len(inString)
-        matched = False
-        
-        while (i < strLen):
-                print "new loop: {}".format(i)
-
-                matched = checkTrigraphs(inString, i)
-               # print outString
-                if matched == True:
-                        i += 3
-                else:
-                        matched = checkBigraphs(inString, i)
-                        if matched == True:
-                                i += 2
-                        else:
-                                matched = checkUnigraphs(inString, i)
-                                i += 1
-
-                if matched == False:
-                        print "outString so far: " + outString + "index: {}".format(i)
-                        print "No othography to SAMPA match found at " + inString[i-1:]
-                        return
-
-        print outString
+		print self.outString
